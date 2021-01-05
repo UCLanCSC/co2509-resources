@@ -37,6 +37,9 @@ This lab aims to achieve the following objective(s) below:
 ## Reading Material 
 
 - Level up your Postman skills -> https://www.youtube.com/playlist?list=PLM-7VG-sgbtAgGq_pef5y_ruIUBPpUgNJ
+- Creating Pages and Popups | Consuming a REST API in Flutter | Part 1 -> https://www.youtube.com/watch?v=GeeqfsgBx7U&list=PL_Wj0DgxTlJeLFYfRBfpFveEd9cQfIpDx&ab_channel=ProgrammingAddict
+- Flutter Basics: How to Create a Stateless Widget and Use External Packages in Flutter -> https://www.youtube.com/watch?v=LfbAeffkeC8&ab_channel=1ManStartup
+- Flutter Basics: How to Create a Stateful Widget and Infinitely Scrolling List in Flutter -> https://www.youtube.com/watch?v=nwjDqyZGMqs&ab_channel=1ManStartup
 
 
 
@@ -243,6 +246,8 @@ Now you have Postman setup we are going to learn how to debug an API request/res
 
 
 
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/5.png?raw=true" alt="Mobile UI to show JSON data" style="zoom:50%;" />
+
 ### 3. Extending your data model
 
 Now you are have the basics working. You now need to extend the model and presentation to the user. 
@@ -252,7 +257,9 @@ Now you are have the basics working. You now need to extend the model and presen
    - CircleAvatar (company logo).
    - subtitle (url).
 
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/6.png?raw=true" alt="Extension of the UI to include logo and url" style="zoom:50%;" />
 
 
 
+<div class=footer><div class=footer-text>  CO2509 Mobile Computing | LAB 15</div></div>
 
