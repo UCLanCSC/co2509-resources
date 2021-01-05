@@ -66,10 +66,29 @@ Of course there are other programs on the market, but I've always found Postman 
 
 Now you have Postman setup we are going to learn how to debug an API request/response. for this example we are going to use Githubs Jobs API which returns JSON based on a set of criteria to search their databases and returns a response. 
 
-1. Create a new request, provide it with a sensible name and create a collection where you want the request to be saved. 
+1. Create a new request, provide it with a sensible name and create a collection where you want the request to be saved.
+
+     <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/1.png?raw=true" alt="Postman create request dialog" style="zoom:50%;" />
+
 2. Paste the following URL (https://jobs.github.com/positions.json?description=mobile+apps&location=london) into the "Enter request URL" textbox. You will notice the program will automatically extract the query params from the URL into a key value pair. This makes it easier for you to test. 'Send' this request and investigate the response. 
+
+   <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/2.png?raw=true" alt="Postman workspace" style="zoom:50%;" />
+
    - you will notice that program makes the json response 'pretty' this makes it easier for you to explore.  
+
+   <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/3.png?raw=true" alt="JSON pretty response" style="zoom:50%;" />
+
 3. Change the values in the key value pair and observe the difference. 
+
+### 2. Integrating the API into your Flutter application
+
+1. You will need to recall how to make the HTTP request and parse JSON data from a previous lab. Set up your project so that you have a button on the screen which when pressed, calls the following URL (https://jobs.github.com/positions.json?description=mobile+apps&location=london) and prints the response to the debug console. 
+
+   <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/4.png?raw=true" alt="Flutter application with button center" style="zoom:50%;" />
+
+2. Now alter your print statement to print the length of the JSON data. 
+
+3.   
 
 
 
