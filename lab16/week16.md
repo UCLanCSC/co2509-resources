@@ -82,7 +82,7 @@ You will need to understand how Firebase works (at a high level), how to set up 
 
 <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/1.png?raw=true" alt="Firebase Realtime Database" style="zoom:50%;" />
 
-2. Create a new Realtime Database instance. For the purpose of this module I would not worry about secrutiy rules and set your database to start in test mode. You can alter this at a later date. The test mode will provide you with full access for 30 days as standard.
+2. Create a new Realtime Database instance. For the purpose of this module I would not worry about security rules and set your database to start in test mode. You can alter this at a later date. The test mode will provide you with full access for 30 days as standard.
 
    ```
    {
@@ -344,7 +344,176 @@ Use the lightswitch boilerplate code to begin with. You will now build up the Wi
     });
     ```
 
-4. ### Developing a Simple Chat Application
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/4.png?raw=true" alt="Emulator screenshot of the light switch application" style="zoom:50%;" />
+
+### 4. Developing a Simple Chat Application
+
+Next you will move onto building a simple chat application to extend the knowledge you've just learnt about communicating with the Realtime Database.  In this example you will learn about storing data locally using shared preferences 
+
+1. Create a new Flutter Application project and remove all unnecessary boilerplate code. You will need to set up a Stateful Widget similar to the previous LightSwitch example. 
+
+2. Lets start with the simple boilerplate code. 
+
+   ```dart
+   import 'package:flutter/material.dart';
+   
+   class MyHomePage extends StatefulWidget {
+   @override
+   	_MyHomePageState createState() => _MyHomePageState();
+   }
+   
+   class _MyHomePageState extends State<MyHomePage> {
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text("Chat App"),
+         ),
+         body: 
+           Container();
+        );
+     }
+   }
+   ```
+
+3. Like earlier we need to get access to the reference to the Database instance. Add this to the _MyHomePageState Widget as a public variable and set the child to 'messages'.
+
+4. We are going to use two textfields to retrieve data from user input 1. username and 2. message. Add the following two lines, below the database reference. These two variables will enable us to access the values from the data inputted later on.
+
+   ```dart
+   TextEditingController _txtName = TextEditingController();
+   TextEditingController _txtMessage = TextEditingController(); 
+   ```
+
+5. You will need to declare an initial state for the Widget. 
+
+   ```
+   @override
+   void initState() {
+   	super.initState();
+   	//...
+   }
+   ```
+
+6. Now you will build the layout for the application. Add the following snippet to your Container Widget. This will create a space within the view that includes padding around the outside.
+
+   ```
+   child: Padding(
+   	padding: const EdgeInsets.all(16.0),
+   	child: Column(
+   		children: [],
+     ),
+   )
+   ```
+
+7. We want the user to enter their name before using the application so lets add a TextFormField at the top of the view. Add the following code inside the children property.
+
+   ```dart
+   TextFormField(
+   	decoration: InputDecoration(labelText: 'Enter your name'),
+   	controller: _txtName,
+   ),
+   ```
+
+8. And likewise a text field to enter the message. The below snippet lays out the Widget in a row. The first Widget is the TextFormField for entering the message text and the second Widget is the button which we will use to send the message
+
+   ```
+   Row(
+   	children: <Widget>[
+   		Expanded(
+   			child: TextFormField(
+   				decoration:
+   				InputDecoration(labelText: 'Enter your message'),
+   				controller: _txtMessage,
+   			),
+   		),
+   		SizedBox(
+   			width: 80,
+   			child: OutlineButton(
+   				child: Text("Send"),
+   				onPressed: () {
+   				}
+   			)),
+   	],
+   ),
+   ```
+
+9. This is where it gets a little bit complicated. As messages can appear at any time, we don't want to have to redraw the new text to the view each time. This would require multiple states and become quite complex to handle. Flutter has a Widget that handles this for you. It's called StreamBuilder(). StreamBuilder is exactly what it sounds like. It builds and handles the Stream of data. Our stream is the messages. This is where you will integrate the reference to the database and access the data in order to display to the user. The following snippet orders by time and changes when an update happens. 
+
+   ```dart
+    StreamBuilder(
+    	stream: databaseReference.orderByChild('time').onValue,
+   	 builder: (context, snap) {
+   	 },
+   ),
+   ```
+
+10. You should now handle the data you are recieving from the database and parse into a Map which will be contained in a List Widget (array of items). Add the following to the builder property. 
+
+    ```dart
+    if (snap.hasData &&
+    	!snap.hasError &&
+    	snap.data.snapshot.value != null) {
+    	Map data = snap.data.snapshot.value;
+    	print(data);
+    	List item = [];
+    	
+    	data.forEach((index, data) => item.add({"key": index, ...data}));
+    ```
+
+11. Now the data is stored within an array we can populate the Listview builder with the array of data. We will use the Expanded Widget (a flexible Widget that allows the content to fill the parent space). You will use the ListView builder, which takes two properties itemCount and itemBuilder. 
+
+    ```dart
+    return Expanded(
+    	child: ListView.builder(
+    	itemCount: item.length,
+    	itemBuilder: (context, index) {
+    ```
+
+    itemCount takes an integer which tells the list how many items you want drawing. We use the array size to calculate this and itemBuilder takes the context of the parent and handles the index of each item within the array.
+
+12. 
+
+13. 
+
+14. 
+
+15. 
+
+16. 
+
+17. 
+
+18. 
+
+19. 
+
+20. 
+
+21. 
+
+22. 
+
+23. 
+
+24. 
+
+25. 
+
+26. 
+
+27. 
+
+28. 
+
+29. In the previous example we updated the database, this time we are going to push ('Create') data to the server. To start lets create the following method inside the _MyHomePageState Widget .
+```dart
+sendMessage() async {
+...
+}
+```
+
+1. 
 
 <div class=footer><div class=footer-text>  CO2509 Mobile Computing | Lab 16</div></div>
 
