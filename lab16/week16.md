@@ -79,179 +79,29 @@ You will need to understand how Firebase works (at a high level), how to set up 
 
 Log into your Firebase console (https://console.firebase.google.com/) and create your first Firebase project.
 
-<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/1.png?raw=true" alt="Postman create request dialog" style="zoom:50%;" />
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/1.png?raw=true" alt="Firebase Realtime Database" style="zoom:50%;" />
 
-### 2. Integrating the API into your Flutter application
+### 2. Integrating Firebase into your Flutter application
 
-1. You will need to recall how to make the HTTP request and parse JSON data from a previous lab. Set up your project so that you have a button on the screen which when pressed, calls the following URL (https://jobs.github.com/positions.json?description=mobile+apps&location=london) and prints the response to the debug console. 
+1. First you will need to get the 'google-services.json' config file which is the main configuration between your mobile application and Firebase. The file contains all information needs to authenticate your application.  
 
-   <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/4.png?raw=true" alt="Flutter application with button center" style="zoom:50%;" />
+   > **Note** This is why it's important to make sure your application ID is the same as the one you provide in the Firebase registration process - these are needed to authenticate the application.  
 
-2. Now alter your print statement to print the length of the JSON data. Now when you press the button it should print the number of items in the JSON object. In this example the number of items is 3.
-
-   ```dart
-   I/flutter ( 8263): 3
-   ```
-
-   
-
-   From here we are going to populate a Card List Widget containing the title for each of these jobs as a new item in the list. From this we are going to need to create a StatefulWidget. 
-
-3. Copy the following code into your main.dart file.
-
-   ```dart
-   import 'package:flutter/material.dart';
-   import 'JSONList.dart';
-   
-   void main() => runApp(MyApp());
-   
-   class MyApp extends StatelessWidget {
-     @override
-     Widget build(BuildContext context) {
-       return MaterialApp(
-           title: 'Welcome to CO2509: Mobile Computing',
-           home: Scaffold(
-             appBar: AppBar(
-               title: Text('Welcome to CO2509'),
-             ),
-             body: Center(
-               child: MyJsonParser(),
-             ),
-           ));
-     }
-   }
-   ```
-
-4. Create a new dart file called JSONList.dart. 
-
-5. Import the following packages
-
-   ```dart
-   import 'package:flutter/material.dart';
-   import 'package:http/http.dart';
-   import 'dart:convert' show json;
-   ```
-
-6. Create a StatefulWidget -  this is the foundations for our Card List View. 
+   <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/2.png?raw=true" alt="Firebase Realtime Database" style="zoom:50%;" />
 
    > **Remember:**
    >
-   > Why we use Stateful over Stateless Widgets, if you are not sure go over the previous labs and lectures as this is a fundemental aspect of developing with Flutter. 
+   > Everytime you include a new dependency or plugin you need to run the following command in the terminal window. These commands are used for obtaining the dependencies and plugins you need to compile your application - [get pub](https://dart.dev/tools/pub/cmd) is specific to dart and is a set of tools for manageing dart packages. pub is short for [package](https://dartcode.org/docs/commands/#pub-get-packages) Whereas, 'packages get' is the full command given and both are interchangeably used. 
+
+   ```dart
+   flutter get pub
+   ```
+
+   ```dart
+   flutter packages get
+   ```
 
    
 
-   ```dart
-   class MyJsonParser extends StatefulWidget {
-     MyJsonParser({Key key, this.title}) : super(key: key);
-     final String title;
-     @override
-     _JSONParser createState() => new _JSONParser();
-   }
-   
-   class _JSONParser extends State<MyJsonParser> {
-     ...
-   }
-   ```
-
-7. We need to create a model which holds the deserialisation of the data. Looking at the response from Postman we need can interrogate which data is returned and the naming for each key pair. Create a new class for this model. You can see we are extracting the title from the JSON response. 
-
-   ```dart
-   class JobDataModel {
-     String title;
-     
-     JobDataModel({this.title});
-     
-     JobDataModel.fromJson(dynamic json) {
-       title = json['title'];
-     }
-   }
-   ```
-
-8. We are now going to create another class which will handle the parsing of the json data into a List we can integrate. This class recieves the data from the JSON return and loops through each item in the return and adds it to the model we've just created. 
-
-   > **Note** here we make sure the json data is not null - it's always best practice to ensure your are parsing the correct data and not introducing more bugs into your code.  
-
-   ```dart
-   class MyJSONData {
-     List<JobDataModel> data;
-   
-     MyJSONData({this.data});
-   
-     MyJSONData.fromJson(dynamic json) {
-       if (json != null) {
-         data = new List<JobDataModel>();
-         json.forEach((v) {
-           data.add(new JobDataModel.fromJson(v));
-         });
-       }
-     }
-   }
-   ```
-
-9. We are now going to add the following code to the _JSONParser class. Notice here we are the two variables loc and dec which contain the Strings london and mobile+apps. These are the query parameters we use in the construction of the url. Look at how the url is consutructed with the concatenated variables using the '$' as a precursor to including the variable. 
-
-   ```dart
-   Future<List<JobDataModel>> _getJobs() async {
-     String loc = "london";
-     String des = "mobile+apps";
-     String url =
-       'https://jobs.github.com/positions.json?description=$des&location=$loc';
-     Response resp = await get(url);
-     List jsonArrayData = json.decode(resp.body);
-     var jsonData = new MyJSONData.fromJson(jsonArrayData);
-     print(jsonData.data.length);
-     return jsonData.data;
-   }
-   ```
-
-10. Inside this class we will now use the FutureBuilder Widget. Which tells the OS that we are waiting for something in the future and once it arrives draw it on screen. You will see the future calls the _getJobs() function which is an async method (which performs the http get request).
-
-    ```dart
-    @override
-    Widget build(BuildContext context) {
-      return new Scaffold(
-        body: Container(
-          child: FutureBuilder(
-            future: _getJobs(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              print(snapshot.data);
-              if (snapshot.data == null) {
-                return Container(child: Center(child: Text("Loading...")));
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                 			...
-                      title: Text(snapshot.data[index].title),
-     									...
-                    );
-                  },
-                );
-              }
-            },
-          ),
-        ),
-      );
-    }
-    ```
-
-
-
-<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/5.png?raw=true" alt="Mobile UI to show JSON data" style="zoom:50%;" />
-
-### 3. Extending your data model
-
-Now you are have the basics working. You now need to extend the model and presentation to the user. 
-
-1. Extend the model to include the company logo and url from the JSON object.
-2. Use the data from the model and present this to the user in the ListTile as:
-   - CircleAvatar (company logo).
-   - subtitle (url).
-
-<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab15/6.png?raw=true" alt="Extension of the UI to include logo and url" style="zoom:50%;" />
-
-
-
-<div class=footer><div class=footer-text>  CO2509 Mobile Computing | LAB 15</div></div>
+<div class=footer><div class=footer-text>  CO2509 Mobile Computing | Lab 16</div></div>
 
