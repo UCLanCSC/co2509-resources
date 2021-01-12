@@ -216,12 +216,7 @@ class UpdateLightSwitch extends State {
   void initState() {
     super.initState();
   }
-
-  updateStatus() {
-    setState(() {
-    });
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -256,11 +251,100 @@ Use the lightswitch boilerplate code to begin with. You will now build up the Wi
    final databaseReference = FirebaseDatabase().reference().child("smarthome");
    ```
 
-   At this point there is nothing inside our Realtime Database and certainly no reference to the smarthome child. Therefore, go to your Firebase console and create the database with the following fields (smarthome > lightswitch: false).
+   At this point there is nothing inside our Realtime Database and certainly no reference to the smarthome child. Therefore, go to your Firebase console and create the database with the following fields (smarthome > lightswitch: false). This creates a document called smarthome with one key value pair of lightswitch and a bool false.
 
    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/3.png?raw=true" alt="Firebase Realtime Database Setup" style="zoom:50%;" />
 
-3. 
+3. Now to build the Widgets. Add the following code inside the children property of the Column Widget. 
+
+   ```dart
+   Text("Light Switch",
+   	style: TextStyle(
+   	color: Colors.blueGrey,
+   	fontSize: 30,
+   	fontFamily: 'Open Sans',
+   )),
+   Spacer(),
+   RaisedButton(
+   	child: status ? Text("LIGHTS ON") : Text("LIGHTS OFF"),
+   	onPressed: () => toggleSwitch(),
+   ),
+   ```
+
+   The status ? Text(...) : Text(...) is referred to as a conditional statement within a child attribute called a ternary operator. Which consists of a condition ? true : false 
+
+4. Write the toggleSwitch method inside the UpdateLightSwitch class but outside of the Widget build method. This method needs to be a async method and does not return anything. 
+
+5. Paste the following code inside the method. This will toggle between the status when the RaiseButton is pressed. This updates the database with the bool (false/true) for the lightswitch key.
+
+   ```dart
+   if (status) {
+   	await databaseReference.update({'lightswitch': false}).then((_) {
+   	print('lights on');
+   });
+   } else {
+   	await databaseReference.update({'lightswitch': true}).then((_) {
+   	print('lights off');
+   });
+   }
+   ```
+
+6. At present you will have some problems with your code. This relates to the status variable not being delcared. Add the status bool variable as a public variable inside the UpdateLightSwitch method. Initialise the bool as false. Now you should see the error go away. Debug your application and see what is currently happening. What is happening?
+
+7.  Within a State Widget we can perform a call once an event is fired. In this case when the Widget loads we can initiate the State at load time. You are now going to write a further method that checks the current status of the lightswitch and stores the state within the application. Inside the initState() method add the following call.
+
+   ```dart
+   checkCurrentStatus();
+   ```
+
+8. You now need to build this method inside the UpdateLightSwitch class (below the toggleSwitch method). Add the following code to listen to new value changes within the database. 
+
+   ```dart
+   databaseReference.onValue.listen((event) {}
+   ```
+
+9. Within the body of this event listener you will need to store the result from the server. Declare a variable of snapshot which stores the event.snapsop as a response from the server. To access the value from the lightswitch pair. You will need to access it directly. Overwrite the value of the status variable with the new response. 
+
+   ```dart
+   var snapshot = event.snapshot;
+   status = snapshot.value['lightswitch'];
+   ```
+
+10. Add the following condition statement to test if your application is working propertly.
+
+    ```dart
+    if (status) {
+    	print('lights on');
+    } else {
+    	print('lights off');
+    }
+    ```
+
+    You should notice that the button changes its name from LIGHTS ON to LIGHTS OFF when pressed. The database also updates itself passing the value from the client to the server. 
+
+11. At this point to prove that the application works across devices, you could start a new instance of an emulator or ask a friend to load your application on their machine to see if you can pass the lights on/off variable across devices. 
+
+12. You can extend this work by actually simulating the turning on lights. To simulate this, we are going to change the colour of the background of the app from white (lights on) to black (lights off). Add the following public variable to your UpdateLightSwitch method. 
+
+    ```dart
+    Color bgColorOnOff = Colors.black;
+    ```
+
+13. Set the property to this variable in the Widget build > Scaffold (outside the appBar and body). Save your code and the hot reload should now have changed the colour of your application background from white to black.
+
+    ```dart
+    backgroundColor: bgColorOnOff,
+    ```
+
+14. In the checkCurrentLightStatus method, inside the conditional statement for status you should set the state that you want to update. In this instance, you should change the colour of the background variable. You will need to use two setState() methods inside each of the conditions of status. You should change the colours to white (on) and black (off).
+
+    ```dart
+    setState(() {
+    	//change background colour variable here
+    });
+    ```
+
+4. ### Developing a Simple Chat Application
 
 <div class=footer><div class=footer-text>  CO2509 Mobile Computing | Lab 16</div></div>
 
