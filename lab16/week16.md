@@ -472,48 +472,238 @@ Next you will move onto building a simple chat application to extend the knowled
 
     itemCount takes an integer which tells the list how many items you want drawing. We use the array size to calculate this and itemBuilder takes the context of the parent and handles the index of each item within the array.
 
-12. 
+12. Next you need to layout each message item. An item consists of a name, message and timestamp. Add the snippet below to the code you've just written. 
 
-13. 
+    > **Note:** There isn't anything new in this block of code that you should not have already come across. Aside from the Flexible() Widget. You should read the documentation to understand what properties exists for this Widget and what its role is.
 
-14. 
+    ```dart
+    return Container(
+    	child: Column(
+    		crossAxisAlignment: CrossAxisAlignment.start,
+    		children: [
+    			SizedBox(
+    				height: 10,
+    			),
+    			Row(
+    				children: <Widget>[
+    					Text(
+                //display name text here
+                "USERNAME"
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12),
+    					),
+    					Flexible(
+              	fit: FlexFit.tight, child: SizedBox()),
+              Text(
+             		//display timestamp text here
+             		"TIMESTAMP"
+             		style: TextStyle(
+              	fontWeight: FontWeight.normal,
+              	fontSize: 10),
+    					),
+    				],
+    			),
+    			Container(
+    				color: Colors.greenAccent,
+    				child: Padding(
+              padding: const EdgeInsets.fromLTRB(5.0, 10.0, 30.0, 10.0),
+              child: Text(
+              	//display message text here
+              	"MESSAGE"
+              	style: TextStyle(
+              	fontWeight: FontWeight.normal,
+              	fontSize: 18),
+    					),
+    				)),
+    		],
+    	),
+    );
+    ```
 
-15. 
+13. The above snippet focusses on displaying and item from the database. But the first time you load your application, there is no data in the database. You need to add this condition to the already in place condition statement for snap.hasData ... The else snippet will run and ignore the above code if there is no data in the database. 
 
-16. 
+    ```dart
+    else
+    	return Center(child: Text("No data"));
+    ```
 
-17. 
+    Debug the application, you should see something like the following screenshot.
 
-18. 
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/5.png?raw=true" alt="Emulator screenshot the initial chat application" style="zoom:50%;" />
 
-19. 
+14. In the previous example we updated the database, this time we are going to push ('Create') data to the server. To start lets create the following method inside the _MyHomePageState Widget.
 
-20. 
+    ```dart
+    sendMessage() async {
+    ...
+    }
+    ```
 
-21. 
+15. Next we are going to build the functionality that allows us to push data to the server. Add the following code to the sendMessage() method. When the 'Send' button onPressed method is called the following will be executed. This will result in constructing the data into key value pairs and pushing it to your database.
 
-22. 
+    ```dart
+    databaseReference.push().set({
+      "name": _txtName.text,
+      "message": _txtMessage.text,
+      'time': DateTime.now().millisecondsSinceEpoch
+    });
+    ```
+    Debug your application to investigate if your application and database communicate with each other. If you have done the steps correctly so far, you should be able to push data to the server. Which will result in your application looklike like:
 
-23. 
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/6.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages" style="zoom:50%;" />
 
-24. 
+    Test out your application by entering a message and sending it to the server. You will notice that once your view updates the messages Widget, the text you've just inputted remains in the text field. You should figure out how to empty the Text Field. 
 
-25. 
+    > **Hint:** You will need to use the public variable for the message text field we initiated earlier on. 
 
-26. 
+16. Update the comments in the above code that state "display X text here" with the following:
 
-27. 
+    ```dart
+    item[index]['name'],
+    item[index]['message']
+    item[index]['time'].toString()
+    ```
 
-28. 
+    Now you should be able to see the messages you've added to the database along with the username and timestamp.
 
-29. In the previous example we updated the database, this time we are going to push ('Create') data to the server. To start lets create the following method inside the _MyHomePageState Widget .
-```dart
-sendMessage() async {
-...
-}
-```
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/7.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages" style="zoom:50%;" />
 
-1. 
+17. To make the timestamps readable the following code will convert the timestamp into readable time. Add the code within _MyHomePageState Widget class, outside of the build Widget. 
+
+    ```dart
+    String readTimestamp(int timestamp) {
+        DateTime myDate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+        String formattedDate = DateFormat('kk:mm a').format(myDate);
+        return formattedDate;
+    }
+    ```
+     Update the "item[index] [time].toString()" to now pass the timestamp to the function. If you debug your application now, you will notice it has converted it to a 24 hour clock. 
+
+18. We're almost finished now, but we need to make some last minute updates. We are going to introduce shared preferences, so that when the application loads again it remembers the username inputted. 
+
+19. Add the following depenency to the pubspec.yaml file and run flutter pub get.
+
+    ```dart
+    shared_preferences: ^0.5.12+4
+    ```
+
+20. Add the import for the package.
+
+    ```dart
+    import 'package:shared_preferences/shared_preferences.dart';
+    ```
+
+21. Now you can use shared preferences. Add the following public variable to _MyHomePageState.
+
+    ```dart
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    ```
+
+22. Then update the sendMessage method to include the ability to store the shared preference. Which obtains access to the shared object and sets the username to equal what is stored in the _txtName text field.
+
+    ```dart
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      prefs.setString('username', _txtName.text);
+    });
+    ```
+
+23. We also need to initiate the shared object when the view is loaded. Again we use the initState() to perform this. Add the following code to the method.
+
+    ```dart
+    getSharedObj();
+    ```
+
+24. Now create the async method and add the following lines to it.
+
+    ```dart
+    final prefs = await SharedPreferences.getInstance();
+    _txtName.text = prefs.getString('username') ?? "";
+    ```
+
+    The code gets the instance of the shared preference and fills the _txtName text field with the value stored in the shared object. Debug your application and test the above functionality by adding a username, typing a message and posting to the server. Debug your application once more to see if the text field is automatically populated with the previous username. 
+
+25.  Try changing the username of your application and send a message. You will notice that the message appears on the left hand side of the view like the previous messages. we can easily change the item in the list if we know the name of the user. Add a condition to the Container Widget where you layout the messages.
+
+    ```
+    return Expanded(
+    	child: ListView.builder(
+    		itemCount: item.length,
+    		itemBuilder: (context, index) {
+    		if (item[index]['name'] == _txtName.text) {
+    			return Container(
+    			child: Column(
+    				crossAxisAlignment: CrossAxisAlignment.start,
+    				children: [
+    				...
+    ```
+
+    The new line of code is:
+
+    ```dart
+    if (item[index]['name'] == _txtName.text) {
+    ```
+
+26. Now add the corresponding else statement. The else will basically run if the username in the text field does not match the one in the message data received from the database. 
+
+    ```dart
+    else {
+    	return Container(
+    		child: Column(
+    			crossAxisAlignment: CrossAxisAlignment.end,
+    			children: [
+            SizedBox(
+            	height: 10,
+            ),
+            Row(
+            	children: <Widget>[
+            		Text(
+                  readTimestamp(item[index]['time']),
+                  style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 10),
+            		),
+            		Flexible(
+            			fit: FlexFit.tight, child: SizedBox()),
+            		Text(
+            			item[index]['name'],
+            			style: TextStyle(
+            			fontWeight: FontWeight.bold,
+            			fontSize: 12),
+    						),
+    					],
+    			),
+    			Container(
+    				color: Colors.blue,
+    					child: Padding(
+    						padding: const EdgeInsets.fromLTRB(5.0, 10.0, 30.0, 10.0),
+                child: Text(
+                	item[index]['message'],
+                	style: TextStyle(
+                	fontWeight: FontWeight.normal,
+                	fontSize: 18),
+                ),
+              )),
+          ],
+     		),
+    	);
+    }
+    ```
+
+    Debug your application you should notice the messages sent from 'other people' now feature on the right side of the view. There isn't much difference here apart from the colour of the message and a swtich around of the name and timestamp.
+
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/8.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages from two users" style="zoom:50%;" />
+
+    ### 5. Futher Work
+
+    #### Extended your applications
+
+    In this lab you have learnt how to create Flutter Firebase applications. Both have demonstrated key aspects of communicating with the database from creating, reading and updating a record. The other aspect you will need to learn is the ability to delete a record. 
+
+    1. You should continue your learning by updating the applications to perform the delete item functionality.
+    2. Update the styling of both applications. 
+    3. Work out why the Stream of messages in the chat application is not sorted by time like the code states. 
 
 <div class=footer><div class=footer-text>  CO2509 Mobile Computing | Lab 16</div></div>
 
