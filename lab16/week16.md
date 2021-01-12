@@ -67,7 +67,7 @@ Firebase is a set of server-side services and tools. Rememer Firebase is the ent
 
 Google has kindly put a survey together to assist developers decide which data storage option is best for them (https://firebase.google.com/docs/database/rtdb-vs-firestore). It is worthwhile visiting this URL to just understand the various questions it prompts you to think about your choices.
 
-You will need to understand how Firebase works (at a high level), how to set up a Firebase proejct, how this integrates with the Flutter development environment and perform CRUD operations between the application and the cloud platform. 
+You will need to understand how Firebase works (at a high level), how to set up a Firebase project, how this integrates with the Flutter development environment and perform CRUD operations between the application and the cloud platform. 
 
 
 
@@ -77,21 +77,48 @@ You will need to understand how Firebase works (at a high level), how to set up 
 
 ### 1. Creating your first Firebase Realtime Database
 
-Log into your Firebase console (https://console.firebase.google.com/) and create your first Firebase project.
+1. Log into your Firebase console (https://console.firebase.google.com/) and create your first Firebase project.
+
 
 <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/1.png?raw=true" alt="Firebase Realtime Database" style="zoom:50%;" />
+
+2. Create a new Realtime Database instance. For the purpose of this module I would not worry about secrutiy rules and set your database to start in test mode. You can alter this at a later date. The test mode will provide you with full access for 30 days as standard.
+
+   ```
+   {
+     "rules": {
+       ".read": "now < 1613001600000",  // 2021-2-11
+       ".write": "now < 1613001600000",  // 2021-2-11
+     }
+   }
+   ```
+
+   You can alter this by changing the following rules once the database has been created (in order to change these rule you will need to access the rules tab within the Realtime Database instance).
+
+   ```
+   {
+   	"rules": {
+   		".read": true,
+    		".write": true,
+   	}
+   }
+   ```
+
+   For more information on rules Julio Marin has a nice write up of [10 Firebase Realtime Database Rule Templates](https://medium.com/@juliomacr/10-firebase-realtime-database-rule-templates-d4894a118a98) and Google's [Get started with Firebase Security Rules](https://firebase.google.com/docs/database/security/get-started).
 
 ### 2. Integrating Firebase into your Flutter application
 
 1. First you will need to get the 'google-services.json' config file which is the main configuration between your mobile application and Firebase. The file contains all information needs to authenticate your application.  
 
-   > **Note** This is why it's important to make sure your application ID is the same as the one you provide in the Firebase registration process - these are needed to authenticate the application.  
+2. Create a new Flutter Application project. Remove all the unnessary boilerplate code, so you have the bare minimum to compile with a Stateless Widget (one you are comfrotable working with).
+
+   > **Note** This is why it's important to make sure your application ID is the same as the one you `provide` in the Firebase registration process - these are needed to authenticate the application.  
 
    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/2.png?raw=true" alt="Firebase Realtime Database" style="zoom:50%;" />
 
    > **Remember:**
    >
-   > Everytime you include a new dependency or plugin you need to run the following command in the terminal window. These commands are used for obtaining the dependencies and plugins you need to compile your application - [get pub](https://dart.dev/tools/pub/cmd) is specific to dart and is a set of tools for manageing dart packages. pub is short for [package](https://dartcode.org/docs/commands/#pub-get-packages) Whereas, 'packages get' is the full command given and both are interchangeably used. 
+   > Every time you include a new dependency or plugin you need to run the following command in the terminal window. These commands are used for obtaining the dependencies and plugins you need to compile your application - [get pub](https://dart.dev/tools/pub/cmd) is specific to dart and is a set of tools for managing dart packages. pub is short for [package](https://dartcode.org/docs/commands/#pub-get-packages) Whereas, 'packages get' is the full command given and both are interchangeably used. 
 
    ```dart
    flutter get pub
@@ -101,7 +128,139 @@ Log into your Firebase console (https://console.firebase.google.com/) and create
    flutter packages get
    ```
 
+   #### Set up your environment to work with the Firebase Realtime Database
+
+3. Open build.gradle file from the root of the android folder and add the following dependency after the last classpath.
+
+   ```dart
+   entry: classpath 'com.google.gms:google-services:4.3.3’
+   ```
+
+4. Open build.gradle file from the android > app directory and add the following plugin to the bottom.
+
+   ```dart
+   apply plugin: 'com.google.gms.google-services’
+   ```
+
+5. Add the following dependency to your pubspec.yaml file.
+
+   ```dart
+   firebase_database: ^3.1.6
    
+   firebase_core: ^0.4.4+3
+   
+   intl: ^0.15.8
+   ```
+
+6. Run the following command in the terminal to clean your flutter projects.
+
+   ```dart
+   flutter clean
+   ```
+
+7. Run the following command in the terminal
+
+   ```dart
+    flutter packages get
+   ```
+
+8. Rebuild the application by running the following command in the terminal.
+
+   ```dart
+   flutter run
+   ```
+
+   > **Note** Sometimes you might have a compile error when importing the packages into your code, to resolve this you need to change the default minSdkVersion to 23. This is Android's way of notifying which version of the OS the app is supported on. You set a minimum OS and target version. 
+
+### 3. Developing a LightSwitch Application
+
+You are going to build an application that simulates the switching on/off of lights from one mobile device to another. you should always break down your code to make it simpler to debug and manage. In the example below, we have the main method in the main.dart file and the lightswitch interaction inside the lightswitch.dart file. 
+
+***main.dart***
+
+```dart
+import 'package:flutter/material.dart';
+import 'lightswitch.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyLightSwitch(),
+    );
+  }
+}
+```
+
+***lightswitch.dart***
+
+```dart
+import 'package:flutter/material.dart';
+
+class MyLightSwitch extends StatefulWidget {
+  UpdateLightSwitch createState() => UpdateLightSwitch();
+}
+
+class UpdateLightSwitch extends State {
+ 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  updateStatus() {
+    setState(() {
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('LightSwitch'),
+      ),
+      body: Center(
+          child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+          ],
+        ),
+      )),
+    );
+  }
+}
+```
+
+Use the lightswitch boilerplate code to begin with. You will now build up the Widget to communicate with the Firebase Realtime Database and provide interaction to the user. You will notice that we are using a State Widget. Having previously learnt the diference between State and Stateless in earlier labs and lectures. You should think what part of this application requires State to be known and kept. 
+
+1. Add the following package to your class. This package will import all the functionality in order to communicate with the Firebase Database (Realtime).
+
+   ```dart
+   import 'package:firebase_database/firebase_database.dart';
+   ```
+
+2. Inside the UpdateLightSwitch method add the following reference to the FirebaseDatabase. 
+
+   ```dart
+   final databaseReference = FirebaseDatabase().reference().child("smarthome");
+   ```
+
+   At this point there is nothing inside our Realtime Database and certainly no reference to the smarthome child. Therefore, go to your Firebase console and create the database with the following fields (smarthome > lightswitch: false).
+
+   <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/3.png?raw=true" alt="Firebase Realtime Database Setup" style="zoom:50%;" />
+
+3. 
 
 <div class=footer><div class=footer-text>  CO2509 Mobile Computing | Lab 16</div></div>
 
