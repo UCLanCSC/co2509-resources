@@ -237,7 +237,7 @@ class UpdateLightSwitch extends State {
 }
 ```
 
-Use the lightswitch boilerplate code to begin with. You will now build up the Widget to communicate with the Firebase Realtime Database and provide interaction to the user. You will notice that we are using a State Widget. Having previously learnt the diference between State and Stateless in earlier labs and lectures. You should think what part of this application requires State to be known and kept. 
+Use the lightswitch boilerplate code to begin with. You will now build up the Widget to communicate with the Firebase Realtime Database and provide interaction to the user. You will notice that we are using a State Widget. Having previously learnt the difference between State and Stateless in earlier labs and lectures. You should think what part of this application requires State to be known and kept. 
 
 1. Add the following package to your class. This package will import all the functionality in order to communicate with the Firebase Database (Realtime).
 
@@ -387,7 +387,7 @@ Next you will move onto building a simple chat application to extend the knowled
 
 5. You will need to declare an initial state for the Widget. 
 
-   ```
+   ```dart
    @override
    void initState() {
    	super.initState();
@@ -397,7 +397,7 @@ Next you will move onto building a simple chat application to extend the knowled
 
 6. Now you will build the layout for the application. Add the following snippet to your Container Widget. This will create a space within the view that includes padding around the outside.
 
-   ```
+   ```dart
    child: Padding(
    	padding: const EdgeInsets.all(16.0),
    	child: Column(
@@ -417,7 +417,7 @@ Next you will move onto building a simple chat application to extend the knowled
 
 8. And likewise a text field to enter the message. The below snippet lays out the Widget in a row. The first Widget is the TextFormField for entering the message text and the second Widget is the button which we will use to send the message
 
-   ```
+   ```dart
    Row(
    	children: <Widget>[
    		Expanded(
@@ -626,7 +626,7 @@ Next you will move onto building a simple chat application to extend the knowled
 
 25.  Try changing the username of your application and send a message. You will notice that the message appears on the left hand side of the view like the previous messages. we can easily change the item in the list if we know the name of the user. Add a condition to the Container Widget where you layout the messages.
 
-    ```
+    ```dart
     return Expanded(
     	child: ListView.builder(
     		itemCount: item.length,
