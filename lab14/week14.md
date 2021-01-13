@@ -1,4 +1,4 @@
-![img](https://github.com/UCLanCSC/co2509-resources/blob/master/general/logo.jpg?raw=true)
+<img  align="right" src="https://github.com/UCLanCSC/co2509-resources/blob/master/general/logo.jpg?raw=true" style="zoom:10%" />
 
 # CO2509 : Mobile Computing
 

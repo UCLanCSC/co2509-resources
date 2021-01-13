@@ -705,5 +705,27 @@ Next you will move onto building a simple chat application to extend the knowled
     2. Update the styling of both applications. 
     3. Work out why the Stream of messages in the chat application is not sorted by time like the code states. 
 
+## Conclusion
+
+You now have the understanding how Flutter works and is architected. You have had a wide range of experience working with the various Flutter Widgets both in terms of Stateless and Stateful. Te importance on the presentation layer with mobile computing has been made easier with Flutter and you have had great experience of the UX of Flutter apps. You have successfully built Flutter applications consisting of building the ecosystem (app icon), assets, navigation, handling data, communicated with servers and parses JSON, you are now able to store data locally using persistant storage and you understand how Flutter apps can be extended through integrating packages through dependencies. 
+
+This is just the surface of mobile computing, application development. There are some great resources out there in the community. 
+
+- [Flutter Twitter](https://twitter.com/flutterdev) 
+- [Flutter Youtube channel](https://www.youtube.com/playlist?list=PLOU2XLYxmsIJ7dsVN4iRuA7BT8XHzGtCr)
+- [Flutter dev Reddit](https://www.reddit.com/r/FlutterDev/)
+- [Flutter Stack overflow](https://stackoverflow.com/tags/flutter) 
+- [Flutter Medium](https://medium.com/flutter)
+- [Flutter on Discord](https://discord.com/invite/N7Yshp4)
+
+There are also two great email subscriptions you should get yourself on:
+
+- [Flutter weekly](https://flutterweekly.net/)
+- [Flutter press weekly](https://www.xriblu.com/flutter-press-weekly)
+
+But you should always be familar with Google's own Flutter [documentation](https://flutter.dev/docs).
+
+You should now take this advanced learning and apply it to your coursework. 
+
 <div class=footer><div class=footer-text>  CO2509 Mobile Computing | Lab 16</div></div>
 
