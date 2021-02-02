@@ -40,6 +40,10 @@ This lab aims to achieve the following objective(s) below:
 - Creating Pages and Popups | Consuming a REST API in Flutter | Part 1 -> https://www.youtube.com/watch?v=GeeqfsgBx7U&list=PL_Wj0DgxTlJeLFYfRBfpFveEd9cQfIpDx&ab_channel=ProgrammingAddict
 - Flutter Basics: How to Create a Stateless Widget and Use External Packages in Flutter -> https://www.youtube.com/watch?v=LfbAeffkeC8&ab_channel=1ManStartup
 - Flutter Basics: How to Create a Stateful Widget and Infinitely Scrolling List in Flutter -> https://www.youtube.com/watch?v=nwjDqyZGMqs&ab_channel=1ManStartup
+- How to add a custom Widget as the first item in the List View -> https://www.youtube.com/watch?v=hNy2h1T5BQU&ab_channel=1ManStartup
+- Backup your Flutter projects to GitHub -> https://www.youtube.com/watch?v=P_V6IiCHj4M&ab_channel=1ManStartup
+- Collecting User Feedback -> https://www.youtube.com/watch?v=sPf_zbReq_0&ab_channel=1ManStartup
+- Creating a mobile privacy policy -> https://www.youtube.com/watch?v=6C4VnJ8cnQE&ab_channel=1ManStartup
 
 
 

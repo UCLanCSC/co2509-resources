@@ -44,6 +44,7 @@ This lab aims to achieve the following objective(s) below:
 - Google Firebase youtube channel -> https://www.youtube.com/user/Firebase
 - Using Firestore as a backend to your Flutter application -> https://www.youtube.com/watch?v=DqJ_KjFzL9I&ab_channel=GoogleDevelopers
 - Introducing Firebase Realtime Database -> https://www.youtube.com/watch?v=U5aeM5dvUpA&feature=emb_title&ab_channel=Firebase
+- Updating Firebase Dependencies -> https://www.youtube.com/watch?v=rmKvN1UCH9c&ab_channel=1ManStartup
 
 
 
