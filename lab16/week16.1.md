@@ -424,6 +424,28 @@ void _emptyTable() async {
 _emptyTable();
 ```
 
-There is another method to clear the cache of your apps. This is achieved by interfacing with the mobile device (even the emulator). Find the app you want to clear the cache from. 
+There is another method to clear the cache of your apps. This is achieved by interfacing with the mobile device (even the emulator). Find the app you want to clear the cache from. Hold down the app and select 'App Info'. 
+
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/sqlite/1.png?raw=true" alt="Firebase Realtime Database" style="zoom:30%;" />
+
+Select > Storage and cache
+
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/sqlite/2.png?raw=true" alt="Firebase Realtime Database" style="zoom:30%;" />
+
+Then > Clear storage & > Clear cache
+
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/sqlite/3.png?raw=true" alt="Firebase Realtime Database" style="zoom:30%;" />
+
+Once you've done this you will notice the size of the user data and cache is 0b. Now when you load the app again no database or persistence will be stored and your application will run again like it was the first time it ran.
+
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/sqlite/4.png?raw=true" alt="Firebase Realtime Database" style="zoom:30%;" />
+
+## Conclusion
+
+You've now experienced how to implement a cloud based storage using Google's Firebase database platform and how you can store data locally using SQLite. This lab has given you the basic CRUD operations in order to store, read, edit and remove data locally. You should think about how you can implement CRUD and local storage into your assignment. What data do you need to store? How will you store it? Where does data need to be stored and retrieved? Why is data persistence important? When should data storage take place? and when should you remove data? 
+
+
+
+
 
 <div class=footer><div class=footer-text>  CO2509 Mobile Computing | Lab 16.1</div></div>
