@@ -170,11 +170,79 @@ Future<Status> addNewProduct() async {
 
 Try this with your own product and barcode and see if it appears in your "products you've added or edited" you can see the above example [here](https://world.openfoodfacts.org/product/1212121212/breadahead-doughnuts-null)  
 
-<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/assignment/1.png?raw=true" alt="Open Food Facts Account" style="zoom:50%;" />
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/assignment/1.png?raw=true" alt="Open Food Facts Account" style="zoom:50%;" />5. Adding a Product Image endpoint
 
-### 5. Adding a Product Image endpoint
+*addProductImage()*
 
-There are some issues with the adding product image endpoint. This is out of scope for this module.
+
+
+```dart
+/// add a new image for an existing product of the OpenFoodFacts database
+Future<Status> addProductImage() async {
+  File f = await getImageFileFromAssets('doughnuts.jpg');
+
+  // define the product image
+  // set the uri to the local image file
+  // choose the "imageField" as location / description of the image content.
+  SendImage image = new SendImage(
+    lang: OpenFoodFactsLanguage.ENGLISH,
+    barcode: "0000000000000",
+    imageField: ImageField.INGREDIENTS,
+    imageUrl: Uri.parse(f.path));
+
+  // query the OpenFoodFacts API
+  Status result = await OpenFoodAPIClient.addProductImage(UserConstants.USER, image);
+
+  if (result.status != "status ok") {
+  	throw new Exception("image could not be uploaded: " +
+  	result.error + " " + result.imageId.toString());
+  }
+
+  return result;
+}
+```
+
+I have a file called doughnuts.jpg that is stored in a directory assets in the root of my application. Also in the pub spec.yaml file I have added the reference to it:
+
+```dart
+assets:
+     - assets/doughnuts.jpg
+```
+
+Furthermore as you can't directly access the URI of the assets bundle once you app is compiled, you need to create a copy of the image and store it in a temporary directory which you then can upload to the endpoint. You will need to include some more imports along with the path_provider package (path_provider: ^1.6.27).
+
+```dart
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
+import 'dart:async';
+import 'dart:io';
+```
+
+The following method will create a temporary image from the asset bundled image:
+
+*getImageFileFromAssets()*
+
+```dart
+Future<File> getImageFileFromAssets(String path) async {
+  final byteData = await rootBundle.load('assets/$path');
+
+  final file = File('${(await getTemporaryDirectory()).path}/$path');
+  await file.writeAsBytes(byteData.buffer
+  .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+  return file;
+}
+```
+
+The line 'File f = await getImageFileFromAssets('doughnuts.jpg');' calls the getImageFileFromAssets() method and supplies it with the image name. The method returns a new file in the temporary directory which you then can get access to the path by calling f.path. As you can see, a successful request will result in returning the following message:
+
+```dart
+I/flutter (24571): body {comment: some comment, user_id: mlochrie-uclan-ac-uk, password: ******, lang: OpenFoodFactsLanguage.ENGLISH, code: 0000000000000, imagefield: ingredients}
+I/flutter (24571): files {imgupload_ingredients: /data/user/0/com.example.openfoodfacts_api/cache/doughnuts.jpg}
+
+```
+
+You will notice the temporary file was created in the 'cache' directory. 
 
 ## Conclusion
 
