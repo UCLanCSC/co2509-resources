@@ -63,8 +63,10 @@ import 'package:openfoodfacts/model/User.dart';
 
 class UserConstants {
   static const User USER = const User(
+    // you need to use your account user id and not email address here
     userId: "",
     password: "",
+    // add a comment to your user profile something relevant to your profile
     comment: "dummy text",
   );
 }
@@ -152,45 +154,23 @@ You will need to add more attributes for your product see [documentation](https:
 
 ```dart
 Future<Status> addNewProduct() async {
-	// define the product to be added.
-	// more attributes available ... 
-  // https://github.com/openfoodfacts/openfoodfacts-dart/blob/documentation/DOCUMENTATION.md
-	String barcode = "0000000000000";
-	String productName = "Mark's Doughnuts";
-
-	var newProduct = Product(barcode: barcode, productName: productName);
-
-	Status result =
-		await OpenFoodAPIClient.saveProduct(UserConstants.USER, newProduct);
-
-  if (result.status != 1) {
-  	throw new Exception("product could not be added: " + result.error);
+    // define the product to be added.
+    // more attributes available ...
+    String barcode = "0000000000001";
+    String productName = 'BreadAhead Doughnuts';
+    var newProduct = Product(barcode: barcode, productName: productName);
+    Status result =
+        await OpenFoodAPIClient.saveProduct(UserConstants.USER, newProduct);
+    if (result.status != 1) {
+      throw new Exception("product could not be added: " + result.error);
+    }
+    return result;
   }
-
-  return result;
-}
 ```
 
-If you try running the following code you will be presented with an error. This error lies in the SDK. To correct this see you will need to Right click on saveProduct > select Go to definition > this will open up 'openfoodfacts.dart' replace the current saveProduct method with the following:
+Try this with your own product and barcode and see if it appears in your "products you've added or edited" you can see the above example [here](https://world.openfoodfacts.org/product/1212121212/breadahead-doughnuts-null)  
 
-```dart
-/// Add the given product to the database.
-/// Returns a Status object as result.
-static Future<Status> saveProduct(User user, Product product) async {
-  var parameterMap = new Map<String, String>();
-  parameterMap.addAll(product.toData());
-
-  var productUri =
-  Uri(scheme: URI_SCHEME, host: URI_HOST, path: '/cgi/product_jqm2.pl');
-
-  Response response =
-  await HttpHelper().doPostRequest(productUri, parameterMap, user);
-  var status = Status.fromJson(json.decode(response.body));
-  return status;
-}
-```
-
-I have reported the bug, but at the time of writing this it was still apparent.
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/ass/1.png?raw=true" alt="Open Food Facts Account" style="zoom:50%;" />
 
 ### 5. Adding a Product Image endpoint
 
