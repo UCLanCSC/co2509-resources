@@ -170,7 +170,7 @@ Future<Status> addNewProduct() async {
 
 Try this with your own product and barcode and see if it appears in your "products you've added or edited" you can see the above example [here](https://world.openfoodfacts.org/product/1212121212/breadahead-doughnuts-null)  
 
-<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/ass/1.png?raw=true" alt="Open Food Facts Account" style="zoom:50%;" />
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/assignment/1.png?raw=true" alt="Open Food Facts Account" style="zoom:50%;" />
 
 ### 5. Adding a Product Image endpoint
 
