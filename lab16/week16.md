@@ -85,7 +85,7 @@ You will need to understand how Firebase works (at a high level), how to set up 
 
 2. Create a new Realtime Database instance. For the purpose of this module I would not worry about security rules and set your database to start in test mode. You can alter this at a later date. The test mode will provide you with full access for 30 days as standard.
 
-   ```
+   ```dart
    {
      "rules": {
        ".read": "now < 1613001600000",  // 2021-2-11
@@ -96,7 +96,7 @@ You will need to understand how Firebase works (at a high level), how to set up 
 
    You can alter this by changing the following rules once the database has been created (in order to change these rule you will need to access the rules tab within the Realtime Database instance).
 
-   ```
+   ```dart
    {
    	"rules": {
    		".read": true,
@@ -226,12 +226,12 @@ class UpdateLightSwitch extends State {
       ),
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-          ],
-        ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+            ],
+          ),
       )),
     );
   }
@@ -345,7 +345,7 @@ Use the lightswitch boilerplate code to begin with. You will now build up the Wi
     });
     ```
 
-<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/4.png?raw=true" alt="Emulator screenshot of the light switch application" style="zoom:50%;" />
+<img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/4.png?raw=true" alt="Emulator screenshot of the light switch application" style="zoom:30%;" />
 
 ### 4. Developing a Simple Chat Application
 
@@ -531,7 +531,7 @@ Next you will move onto building a simple chat application to extend the knowled
 
     Debug the application, you should see something like the following screenshot.
 
-    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/5.png?raw=true" alt="Emulator screenshot the initial chat application" style="zoom:50%;" />
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/5.png?raw=true" alt="Emulator screenshot the initial chat application" style="zoom:30%;" />
 
 14. In the previous example we updated the database, this time we are going to push ('Create') data to the server. To start lets create the following method inside the _MyHomePageState Widget.
 
@@ -552,7 +552,7 @@ Next you will move onto building a simple chat application to extend the knowled
     ```
     Debug your application to investigate if your application and database communicate with each other. If you have done the steps correctly so far, you should be able to push data to the server. Which will result in your application looklike like:
 
-    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/6.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages" style="zoom:50%;" />
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/6.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages" style="zoom:30%;" />
 
     Test out your application by entering a message and sending it to the server. You will notice that once your view updates the messages Widget, the text you've just inputted remains in the text field. You should figure out how to empty the Text Field. 
 
@@ -568,7 +568,7 @@ Next you will move onto building a simple chat application to extend the knowled
 
     Now you should be able to see the messages you've added to the database along with the username and timestamp.
 
-    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/7.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages" style="zoom:50%;" />
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/7.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages" style="zoom:30%;" />
 
 17. To make the timestamps readable the following code will convert the timestamp into readable time. Add the code within _MyHomePageState Widget class, outside of the build Widget. 
 
@@ -694,7 +694,7 @@ Next you will move onto building a simple chat application to extend the knowled
 
     Debug your application you should notice the messages sent from 'other people' now feature on the right side of the view. There isn't much difference here apart from the colour of the message and a swtich around of the name and timestamp.
 
-    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/8.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages from two users" style="zoom:50%;" />
+    <img src="https://github.com/UCLanCSC/co2509-resources/blob/master/lab16/8.png?raw=true" alt="Emulator screenshot of the simple chat presentation of messages from two users" style="zoom:30%;" />
 
     ### 5. Futher Work
 
